@@ -10,7 +10,6 @@
   - `yarn serve` 或 `npm run dev`
 
 ## 项目文件结构
-
 ```txt
 .
 ├── README.md
@@ -70,6 +69,4 @@
 ├── vue.config.js
 └── yarn.lock
 ```
-
-
 
