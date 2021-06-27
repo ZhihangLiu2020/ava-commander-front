@@ -10,11 +10,6 @@
   - `yarn serve` 或 `npm run dev`
 
 ## 项目文件结构
-
-<details>
-```bash
-tree -L 3 -I "node_modules"
-```
 ```txt
 .
 ├── README.md
@@ -73,9 +68,5 @@ tree -L 3 -I "node_modules"
 │       └── Support.vue
 ├── vue.config.js
 └── yarn.lock
-```
-
-</details>
-
 
 
