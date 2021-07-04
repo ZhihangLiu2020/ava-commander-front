@@ -7,7 +7,7 @@ const state = {
   drawerImage: true,
   mini: false,
   items: [
-    {
+    /* {
       title: '首页',
       icon: 'mdi-view-dashboard',
       to: '/',
@@ -26,17 +26,25 @@ const state = {
       title: '支持协议和流量样本',
       icon: 'mdi-view-list',
       to: '/support',
-    },
+    }, */
   ],
 }
 
-const mutations = make.mutations(state)
-
+// const mutations = make.mutations(state)
+const mutations = {
+  ...make.mutations(state),
+  SETNAV(state, data){
+    state.items = data;
+  }
+}
 const actions = {
   ...make.actions(state),
   init: async ({ dispatch }) => {
     //
   },
+  SETNAV({commit}, data){
+    commit('SETNAV',data)
+  }
 }
 
 const getters = {}
