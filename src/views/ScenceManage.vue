@@ -31,32 +31,57 @@
             <v-data-table
               :headers="scenceHeaders"
               :items="scence"
-            />
+            >
+            <template v-slot:[`item.operate`]="{item}">
+              <v-row justify="space-around">
+                <v-btn
+                  x-small
+                  color="green"
+                  @click="handleCheck(item)"
+                  
+                >
+                  查看
+                </v-btn>
+                <v-btn
+                  x-small
+                  color="blue"
+                  @click="handleUpload(item)"
+                  
+                >
+                  编辑
+                </v-btn>
+                <v-btn
+                  x-small
+                  color="red"
+                  @click="handleDelete(item)"
+                  
+                >
+                  删除
+                </v-btn>
+              </v-row>
+            </template>
+            </v-data-table>
           </v-card-text>
         </material-card>
+      </v-col>
+      <v-col
+        cols="12"
+      >
+        <v-file-input
+          @change="handleUpload"
+        ></v-file-input>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+  import axios from 'axios'
+  import { getScence } from '@/api/scenceManage'
   export default {
     name: 'ScenceManageView',
     data: () => ({
-      scence: [
-        {
-          id: 1,
-          name: 'xxx并发测试',
-          description: '用于测试并发xxx设备抗压能力',
-          operate: '编辑',
-        },
-        {
-          id: 2,
-          name: 'xxx并发测试',
-          description: '用于测试并发xxx设备抗压能力',
-          operate: '编辑',
-        },
-      ],
+      scence: [],
       scenceHeaders: [
         {
           text: '序号',
@@ -76,5 +101,32 @@
         },
       ],
     }),
+    mounted(){
+      this.getScence()
+    },
+    methods: {
+      // 上传文件
+      handleUpload(file){
+        if(file){
+          const formData = new FormData()
+          formData.append('file',file)
+          axios({
+            method: 'post',
+            url: '/api/avaCommander/upload',
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            data: formData
+          }).then(res=>{
+            console.log(res)
+          })
+        }
+      },
+      async getScence(){
+        let { data } = await getScence();
+        console.log('新的封装：',data)
+        this.scence = data
+      }
+    }
   }
 </script>

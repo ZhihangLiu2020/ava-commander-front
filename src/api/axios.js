@@ -1,5 +1,6 @@
 // 二次封装axios
 import axios from 'axios'
+// 使用qs库编码数据
 import qs from 'qs'
  
 axios.defaults.timeout = 5000

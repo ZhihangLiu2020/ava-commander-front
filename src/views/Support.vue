@@ -74,6 +74,7 @@
 </template>
 
 <script>
+  import { getProtocolList, getTrafficList } from '@/api/support'
   export default {
     name: 'SupportView',
 
@@ -102,42 +103,22 @@
           value: 'name',
         },
       ],
-      protocol: [
-        {
-          id: 1,
-          name: 'TCP',
-        },
-        {
-          id: 2,
-          name: 'UDP',
-        },
-        {
-          id: 3,
-          name: 'TCP',
-        },
-        {
-          id: 4,
-          name: 'UDP',
-        },
-        {
-          id: 5,
-          name: 'TCP',
-        },
-        {
-          id: 6,
-          name: 'UDP',
-        },
-      ],
-      sampleTraffic: [
-        {
-          id: 1,
-          name: 'skype',
-        },
-        {
-          id: 2,
-          name: 'wechat',
-        },
-      ],
+      protocol: [],
+      sampleTraffic: [],
     }),
+    mounted(){
+      this.getProtocolList()
+      this.getTrafficList()
+    },
+    methods: {
+      async getProtocolList(){
+        let { data } = await getProtocolList();
+        this.protocol = data;
+      },
+      async getTrafficList(){
+        let { data } = await getTrafficList();
+        this.sampleTraffic = data;
+      }
+    }
   }
 </script>

@@ -28,14 +28,24 @@
         :headers="testResultHeaders"
         :items="testResult"
       >
+        <template v-slot:[`item.createtime`]="{item}">
+          {{new Date(item.createtime).toLocaleString()}}
+        </template>
         <template v-slot:[`item.testManage`]="{item}">
-          <v-row>
+          <v-row justify="space-around">
             <v-btn
               x-small
               color="green"
               @click="handleCheck(item)"
             >
               查看
+            </v-btn>
+            <v-btn
+              x-small
+              color="green"
+              @click="handleUpload(item)"
+            >
+              上传
             </v-btn>
             <v-btn
               x-small
@@ -53,25 +63,11 @@
 </template>
 
 <script>
+  import { getResult } from '@/api/resultManage'
   export default {
     name: 'ResultManageView',
     data: () => ({
-      testResult: [
-        {
-          id: 1,
-          testName: '001',
-          testTime: new Date().toLocaleDateString(),
-          testCreator: 'lzh',
-          testManage: '上传',
-        },
-        {
-          id: 2,
-          testName: '002',
-          testTime: new Date().toLocaleDateString(),
-          testCreator: 'lzh',
-          testManage: '上传',
-        },
-      ],
+      testResult: [],
       testResultHeaders: [
         {
           text: '序号',
@@ -79,15 +75,15 @@
         },
         {
           text: '测试名称',
-          value: 'testName',
+          value: 'name',
         },
         {
           text: '测试时间',
-          value: 'testTime',
+          value: 'createtime',
         },
         {
           text: '创建人',
-          value: 'testCreator',
+          value: 'creator',
           sortable: false,
         },
         {
@@ -97,5 +93,15 @@
         },
       ],
     }),
+    mounted(){
+      this.getResult()
+    },
+    methods: {
+      async getResult(){
+        let { data } = await getResult();
+        console.log("结果列表",data)
+        this.testResult = data;
+      }
+    }
   }
 </script>
