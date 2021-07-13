@@ -1,9 +1,6 @@
 // Utilities
 import { make } from 'vuex-pathify'
 
-// Globals
-import { IN_BROWSER } from '@/util/globals'
-
 const state = {
   dark: false,
   drawer: {
@@ -16,31 +13,23 @@ const state = {
     'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)',
     'rgba(244, 67, 54, .8), rgba(244, 67, 54, .8)',
   ],
+  userStatus: {},
   // Aside导航栏背景图片
   images: [],
   notifications: [],
   rtl: false,
 }
 
-const mutations = make.mutations(state)
+const mutations = {
+  ...make.mutations(state),
+  SET_USERINFO(state, data){
+    state.userStatus = data
+  },
+}
 
 const actions = {
-  fetch: ({ commit }) => {
-    const local = localStorage.getItem('vuetify@user') || '{}'
-    const user = JSON.parse(local)
-
-    for (const key in user) {
-      commit(key, user[key])
-    }
-
-    if (user.dark === undefined) {
-      commit('dark', window.matchMedia('(prefers-color-scheme: dark)'))
-    }
-  },
-  update: ({ state }) => {
-    if (!IN_BROWSER) return
-
-    localStorage.setItem('vuetify@user', JSON.stringify(state))
+  SET_USERINFO({commit}, data){
+    commit('SET_USERINFO',data)
   },
 }
 

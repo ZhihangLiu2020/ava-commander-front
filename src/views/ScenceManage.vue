@@ -70,6 +70,7 @@
         <v-file-input
           @change="handleUpload"
         ></v-file-input>
+        <v-btn @click="handleDownload">下载</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -77,7 +78,7 @@
 
 <script>
   import axios from 'axios'
-  import { getScence } from '@/api/scenceManage'
+  import { getScence, downLoad } from '@/api/scenceManage'
   export default {
     name: 'ScenceManageView',
     data: () => ({
@@ -122,9 +123,23 @@
           })
         }
       },
+      // 下载文件
+      handleDownload(){
+        downLoad({name:'1625475530587.docx'})
+        .then(res=>{
+          let filename = res.headers['content-disposition'].substr(23,17);
+          let blob = new Blob([res.data]);
+          let link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = filename
+          link.click()
+          window.URL.revokeObjectURL(link.href);
+          console.log(res)
+        })
+      },
+      // 获取场景列表
       async getScence(){
         let { data } = await getScence();
-        console.log('新的封装：',data)
         this.scence = data
       }
     }

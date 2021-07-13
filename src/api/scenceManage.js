@@ -6,3 +6,12 @@ export function getScence(){
     method: 'get'
   })
 }
+
+export function downLoad(data){
+  return request({
+    url: '/api/avaCommander/download',
+    method: 'post',
+    data,
+    responseType: 'blob'
+  })
+}

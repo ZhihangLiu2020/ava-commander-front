@@ -20,7 +20,6 @@
     <default-drawer-toggle class="hidden-sm-and-down" />
 
     <v-spacer />
-
     <default-account />
   </v-app-bar>
 </template>
@@ -28,7 +27,7 @@
 <script>
   // Utilities
   import { get, sync } from 'vuex-pathify'
-
+  import store from '@/store'
   export default {
     name: 'DefaultBar',
 

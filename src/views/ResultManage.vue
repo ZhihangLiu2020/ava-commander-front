@@ -99,7 +99,7 @@
     methods: {
       async getResult(){
         let { data } = await getResult();
-        console.log("结果列表",data)
+        //console.log("结果列表",data)
         this.testResult = data;
       }
     }

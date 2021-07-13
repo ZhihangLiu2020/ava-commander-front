@@ -9,6 +9,10 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //请求拦截器
 axios.interceptors.request.use(
     config => {
+        let token = localStorage.getItem('token')
+        if(token){
+            config.headers.common.Authorization = token
+        }
         return config
     },
     error => {

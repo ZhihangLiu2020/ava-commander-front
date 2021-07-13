@@ -1,9 +1,7 @@
 // Pathify
 import { make } from 'vuex-pathify'
 
-const state = {
-  username: '123',
-}
+const state = {}
 
 const mutations = make.mutations(state)
 

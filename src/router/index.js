@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../views/Login'
+import LoginContainer from '@/layouts/default/LoginContainer'
 // import { trailingSlash } from '@/util/helpers'
 import {
   layout,
@@ -12,7 +13,7 @@ import getNav from '../api/nav'
 import store from '../store'
 
 Vue.use(Router)
-
+import axios from '../api/axios'
 const routes = [
   /* layout('Default', [
     route('Dashboard'),
@@ -29,26 +30,40 @@ const routes = [
   /* layout('Default', 
     route('Login', null, 'login')
   ) */
-  { path: '/login', component: Login },
+  { path: '/',
+    component: Login,
+    /* component: LoginContainer,
+    children: [
+      {path: '/', component: Login}
+    ] */
+  },
 ]
 
 // 根据复用的数据动态生成路由
 const router = new Router({
   routes,
-})
+});
 
 
 //路由拦截
 router.beforeEach((to,from,next) => {
-  // 动态生成路由数据
-  //addRoute()
-  next()
+  let token = localStorage.getItem('token')
+  if (to.path!=='/' && token===null) {
+    alert("请登陆")
+    // vuex 清除 userInfo 和登陆状态
+    //store.dispatch('user/SET_USERINFO', {userInfo: {}, status: false})
+  }else if(to.path==='/'){
+    localStorage.removeItem('token')
+    next()
+  }else{
+    next()
+  }
 });
 // 动态生成路由数据
 (function addRoute(){
   // 请求数据
   getNav().then(res=>{
-    console.log("请求导航栏1：",res)
+    //console.log("请求导航栏1：",res, JSON.parse(res.data[0].meta))
     // 拼接路由
     let data = routesData(res.data)
     // 缓存到vuex

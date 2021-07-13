@@ -3,7 +3,7 @@
   <v-menu
     bottom
     left
-    min-width="200"
+    min-width="150"
     offset-y
     origin="top right"
     transition="scale-transition"
@@ -21,42 +21,46 @@
       </v-btn>
     </template>
 
-    <v-list
-      :tile="false"
-      flat
-      nav
-    >
-      <template v-for="(p, i) in profile">
-        <v-divider
-          v-if="p.divider"
-          :key="`divider-${i}`"
-          class="mb-2 mt-2"
-        />
-
-        <app-bar-item
-          v-else
-          :key="`item-${i}`"
-          to="/login"
-        >
-          <v-list-item-title v-text="p.title" />
-        </app-bar-item>
-      </template>
+    <v-list>
+      <v-list-item @click="logout">
+        <v-list-item-title class="text-h5">退出</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import store from '@/store'
   export default {
     name: 'DefaultAccount',
     computed: {
-      ...mapState(['username'])
+      ...mapState(['user'])
     },
 
     data: () => ({
       profile: [
         { title: 'Log out' },
+        { title: 'help'}
       ],
     }),
+    computed:{
+      username(){
+        return localStorage.getItem('username')
+      }
+    },
+    methods: {
+      async logout() {
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        // vuex 清除登陆信息
+        store.dispatch('user/SET_USERINFO', {userInfo: {}, status: false})
+        //console.log("退出",store.state.user.userStatus)
+        //console.log("token",localStorage.getItem('token'))
+        if (this.$route.path !== '/') {
+          this.$router.push('/')
+        }
+      },
+    }
   }
 </script>
