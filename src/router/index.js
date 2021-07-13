@@ -52,10 +52,16 @@ router.beforeEach((to,from,next) => {
     alert("请登陆")
     // vuex 清除 userInfo 和登陆状态
     //store.dispatch('user/SET_USERINFO', {userInfo: {}, status: false})
+    // 通过url退向登陆页时，也视为退出
   }else if(to.path==='/'){
     localStorage.removeItem('token')
     next()
   }else{
+    
+    /* next({
+      ...to,
+      replace: true
+    }) */
     next()
   }
 });

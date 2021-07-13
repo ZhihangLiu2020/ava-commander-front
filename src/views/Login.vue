@@ -2,56 +2,59 @@
   <!--登陆页面，包裹在v-app中，才能使用vuetify的样式和布局-->
   <v-app>
     <v-spacer></v-spacer>
-    <v-row>
-      <v-col align="center">
-        <v-card
-          outlined
-          max-width="400"
-        >
-          <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation
+      <v-row>
+        <v-col align="center">
+          <v-card
+            outlined
+            max-width="400"
           >
-            <v-card-title>
-              <span class="text-h5">Avalanche控制系统</span>
-            </v-card-title>
-            <v-card-text>
-              <v-text-field
-                v-model="name"
-                :counter="10"
-                :rules="nameRules"
-                label="用户名"
-                required
-              />
-              <v-text-field
-                v-model="password"
-                label="密码"
-                required
-                type="password"
-              />
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <app-btn
-                :disabled="!valid"
-                color="blue"
-                @click="login"
-              >
-                登陆
-              </app-btn>
-              <v-btn
-                color="orange"
-                @click="addUsers"
-              >
-                注册
-              </v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
+            <v-form
+              ref="form"
+              v-model="valid"
+              lazy-validation
+            >
+              <v-card-title>
+                <span class="text-h5">Avalanche控制系统</span>
+              </v-card-title>
+              <v-card-text @keydown.enter="login">
+                <v-text-field
+                  v-model="name"
+                  :counter="10"
+                  :rules="nameRules"
+                  label="用户名"
+                  required
+                />
+                <v-text-field
+                  v-model="password"
+                  label="密码"
+                  :rules="passwordRules"
+                  required
+                  type="password"
+                  
+                />
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <app-btn
+                  :disabled="!valid"
+                  color="blue"
+                  @click="login"
+                  
+                >
+                  登陆
+                </app-btn>
+                <v-btn
+                  color="orange"
+                  @click="addUsers"
+                >
+                  注册
+                </v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-col>
+      </v-row>
     <v-spacer></v-spacer>
   </v-app>
 </template>
@@ -70,6 +73,9 @@
       nameRules: [
         v => !!v || '用户名不得为空',
         v => (v && v.length <= 10) || '用户名不得超过10个字符',
+      ],
+      passwordRules: [
+        v => !!v || '密码不得为空',
       ],
       updateUserForm: {
         username: '',
