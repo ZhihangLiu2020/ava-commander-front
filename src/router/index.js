@@ -47,8 +47,21 @@ const router = new Router({
 
 //路由拦截
 router.beforeEach((to,from,next) => {
+  // 登陆页始终可达
+  if(to.path == '/'){
+    localStorage.removeItem('token');// 任何时候到登陆页，都安全退出
+    return next();
+  }
   let token = localStorage.getItem('token')
-  if (to.path!=='/' && token===null) {
+  // 若没有登陆，返回登陆页
+  if(!token){
+    console.log("请登陆",token);
+    return next('/');
+  }
+  // 若已经登陆，前往所求页面
+  next();
+  // 下面是另一种写法
+  /* if (to.path!=='/' && token===null) {
     alert("请登陆")
     // vuex 清除 userInfo 和登陆状态
     //store.dispatch('user/SET_USERINFO', {userInfo: {}, status: false})
@@ -57,13 +70,8 @@ router.beforeEach((to,from,next) => {
     localStorage.removeItem('token')
     next()
   }else{
-    
-    /* next({
-      ...to,
-      replace: true
-    }) */
     next()
-  }
+  } */
 });
 // 动态生成路由数据
 (function addRoute(){
